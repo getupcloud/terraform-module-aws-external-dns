@@ -2,17 +2,18 @@ variable "cluster_name" {
   description = "EKS Cluster name"
   type        = string
 }
+
 variable "customer_name" {
   description = "customer name"
   type        = string
 }
 
-variable "hosted_zone_id" {
+variable "hosted_zone_ids" {
   description = "AWS Route53 Hosted Zone ID to external dns automatically handle"
-  type        = string
+  type        = list(string)
 
   validation {
-    condition     = length(var.hosted_zone_id) > 0
+    condition     = length(var.hosted_zone_ids) > 0
     error_message = "The hosted_zone_id value must not be empty."
   }
 }
