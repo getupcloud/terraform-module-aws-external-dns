@@ -37,3 +37,9 @@ variable "tags" {
   type        = any
   default     = {}
 }
+
+variable "external-dns" {
+  default = {
+    "external-dns-private" : false
+  }
+}

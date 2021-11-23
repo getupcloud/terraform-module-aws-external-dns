@@ -27,16 +27,18 @@ data "aws_iam_policy_document" "aws_external-dns" {
   }
 }
 
-resource "aws_iam_policy" "aws_external-dns" {
+resource "aws_iam_policy" "aws_external-dns-private" {
+  count  = try(var.external-dns.external-dns-private, false) ? 1 : 0
   name        = local.name_prefix
   description = "External DNS policy for EKS cluster ${var.cluster_name}"
   policy      = data.aws_iam_policy_document.aws_external-dns.json
 }
 
-module "irsa_aws_external-dns" {
+module "irsa_aws_external-dns-private" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version = "~> 4.2"
-
+  
+  count  = try(var.external-dns.external-dns-private, false) ? 1 : 0
   create_role                   = true
   role_name                     = local.name_prefix
   provider_url                  = var.cluster_oidc_issuer_url
