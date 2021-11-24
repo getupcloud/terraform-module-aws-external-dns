@@ -37,9 +37,8 @@ variable "tags" {
   type        = any
   default     = {}
 }
-
-variable "external-dns" {
-  default = {
-    "external-dns-private" : false
-  }
+variable "prefix" {
+  description = "name prefix external dns"
+  type        = string
 }
+
