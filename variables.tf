@@ -40,5 +40,6 @@ variable "tags" {
 variable "prefix" {
   description = "name prefix external dns"
   type        = string
+  default     = {}
 }
 
