@@ -11,11 +11,7 @@ variable "customer_name" {
 variable "hosted_zone_ids" {
   description = "AWS Route53 Hosted Zone ID to external dns automatically handle"
   type        = list(string)
-
-  validation {
-    condition     = length(var.hosted_zone_ids) > 0
-    error_message = "The hosted_zone_id value must not be empty."
-  }
+  default     = []
 }
 
 variable "cluster_oidc_issuer_url" {

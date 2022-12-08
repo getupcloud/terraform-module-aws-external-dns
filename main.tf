@@ -7,16 +7,6 @@ data "aws_iam_policy_document" "aws_external_dns" {
     effect = "Allow"
 
     actions = [
-      "route53:ChangeResourceRecordSets"
-    ]
-
-    resources = [for h in var.hosted_zone_ids : "arn:aws:route53:::hostedzone/${h}"]
-  }
-
-  statement {
-    effect = "Allow"
-
-    actions = [
       "route53:ListHostedZones",
       "route53:ListResourceRecordSets"
     ]
@@ -24,6 +14,32 @@ data "aws_iam_policy_document" "aws_external_dns" {
     resources = [
       "*"
     ]
+  }
+
+  dynamic "statement" {
+    for_each = length(var.hosted_zone_ids) > 0 ? ["hosted_zone_ids"] : []
+    content {
+      effect = "Allow"
+
+      actions = [
+        "route53:ChangeResourceRecordSets"
+      ]
+
+      resources = [for id in var.hosted_zone_ids : "arn:aws:route53:::hostedzone/${id}"]
+    }
+  }
+
+  dynamic "statement" {
+    for_each = length(var.hosted_zone_ids) > 0 ? [] : ["all_hosted_zone_ids"]
+    content {
+      effect = "Allow"
+
+      actions = [
+        "route53:ChangeResourceRecordSets"
+      ]
+
+      resources = ["arn:aws:route53:::hostedzone/*"]
+    }
   }
 }
 
