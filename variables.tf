@@ -28,14 +28,9 @@ variable "service_account_name" {
   description = "ServiceAccount name for external-dns"
   default     = "external-dns"
 }
+
 variable "tags" {
   description = "AWS tags to apply to resources"
   type        = any
   default     = {}
 }
-variable "prefix" {
-  description = "name prefix external dns"
-  type        = string
-  default     = ""
-}
-
