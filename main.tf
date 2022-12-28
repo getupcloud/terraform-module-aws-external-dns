@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "aws_external_dns" {
 }
 
 resource "aws_iam_policy" "aws_external_dns" {
-  name        = "${local.name_prefix}-${var.prefix}"
+  name_prefix = local.name_prefix
   description = "External DNS policy for EKS cluster ${var.cluster_name}"
   policy      = data.aws_iam_policy_document.aws_external_dns.json
 }
@@ -54,7 +54,7 @@ module "irsa_aws_external_dns" {
   version = "~> 4.2"
 
   create_role                   = true
-  role_name                     = "${local.name_prefix}-${var.prefix}"
+  role_name_prefix              = local.name_prefix
   provider_url                  = var.cluster_oidc_issuer_url
   role_policy_arns              = [aws_iam_policy.aws_external_dns.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.service_account_namespace}:${var.service_account_name}"]
